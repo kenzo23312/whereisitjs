@@ -1,0 +1,143 @@
+html,body {
+    background: #222222;
+    color: white;
+    width:100%;
+    height:100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+}
+ 
+img {
+    max-width:100%;
+    max-height:100%;
+    height: auto;
+    width: auto\9; 
+}
+
+.square {
+    position: relative; 
+    height:100vmin;
+    width:100vmin;
+    margin:auto;
+    background: wheat;
+}
+
+.square:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
+
+.content {
+    position: absolute;
+    border-style: solid;
+    border-width: 0px 5px 0px 5px;
+    border-color: #222222;
+    background: #2c2c2c;
+    width: 100%; 
+    height: 100%;
+}
+
+.points {
+    position: absolute;
+    background: #3b3b3b; 
+    border-style: solid;
+    border-width: 5px 0px 0px 0px;
+    border-color: #222222;
+    width: 100%;
+    height: 15%;
+    bottom:0;
+}
+
+.questionBody {
+    position: absolute; 
+    background: white;
+    width: 100%;
+    height: 78%;
+}
+
+.center { 
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.questionButtons {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    align-items: center;
+}
+.button {
+    margin: 20vmin;
+}
+
+.timerContent {
+    position: absolute; 
+    background: yellow;
+    width: 100%;
+    height: 79%;
+}
+
+
+/*
+.img {
+    width: 100%;
+    height: 0;
+    padding-bottom: 82%;
+    background: white; 
+    margin:0 auto;
+}*/
+
+.navigationBar {
+    height: 5%; 
+    position: relative; 
+    background: #3b3b3b; 
+}
+
+.navigationLine {
+     height: 0.7%;
+     background: #222222; 
+}   
+
+.navigationTitle { 
+    font-size: 3vmin;
+    width:100%;
+}
+
+.closeButton {
+    height:5vh; 
+    width: 5vh; 
+    text-align: center;
+    cursor: pointer;
+    background: #222222; 
+}
+
+.imgClose {
+    height: 60%;
+    width: 60%;
+}
+
+.imgPointer {
+    cursor: pointer;
+    top:0;
+    right: 0;
+    
+    position: absolute;
+    z-index: 1;
+}
+
+.imgPointerYellow {
+    cursor: pointer;
+    top:0;
+    right: 0;
+    position: absolute;
+    z-index: 3;
+}
+
+.image-container {
+    width: 100%;
+    height:100%;
+    background: pink;
+    position: relative; 
+} 

@@ -1,0 +1,49 @@
+.timerBg { 
+    width: 9vmin;
+    height: 9vmin;
+    background-color: #222222; 
+    display: flex; 
+    border-radius: 50%;  
+    flex-direction: center;
+    align-items: center;
+    justify-content: space-around;
+}   
+
+.centerElement {
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    flex-direction: center;
+    align-items: center;
+    justify-content: space-around;
+} 
+
+.centerElementR {
+
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    position: relative; 
+} 
+
+.CircularProgressbar { 
+    height: 10vmin;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #e7053b;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease 0s;
+}
+
+.CircularProgressbar .CircularProgressbar-trail {
+  stroke: #1c1c1c;
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+  fill: #ffffff;
+  font-size: 6vmin;
+  dominant-baseline: middle;
+  text-anchor: middle;
+}
