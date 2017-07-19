@@ -1,15 +1,27 @@
-import React from 'react';
-import fetch from 'isomorphic-fetch'
+import React from 'react'; 
+import { requestCountries } from './redux/actions';
 import CountryImage from './CountryImage.js';
+import PropTypes from 'prop-types';
+import { endRound } from './redux/actions';
+import { connect } from 'react-redux';
 
-module.exports = class CountryStage extends React.Component {
+class CountryStage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { isYellow: false, yellowPath: '' };
+        this.state = { isYellow: false, yellowPath: '', items: [] };
+    }
+
+     componentDidMount() {
+        const { dispatch } = this.props
+        dispatch(requestCountries)
     }
 
     handleMapClick(event) {
+        if(this.state.isYellow) {
+            return;
+        }
+
         var img = document.getElementById('map');
         var canvas = document.createElement('canvas');
         canvas.width = img.width;
@@ -22,64 +34,72 @@ module.exports = class CountryStage extends React.Component {
         var red = imageData.data[index];
         var green = imageData.data[index + 1];
         var blue = imageData.data[index + 2];
-        console.log('width');
-        this.fetchCountry(red, green, blue);
-        if (red === 225 && green === 223 && blue === 223) {
-            //this.addYellowImage('./img/27_y.png');
-        }
+        
+        this.checkCountry(red, green, blue);
     }
 
-    addYellowImage(path) {
-        console.log('width');
+    addYellowImage(path) { 
         this.setState({ isYellow: true });
-        this.setState({ yellowPath: path });
-        // var root = document.getElementById('country_img')
-        // root.appendChild(<img className='imgPointerYellow' onClick={this.handleClick} id='map' alt="map" src={require(path)} />);
-
-
-        // this.setState(this.state.concat([id='yellow', src='./img/27_y.png']));
-
+        this.setState({ yellowPath: path }); 
     }
 
-    fetchCountry(r, g, b) {
-        let data = { 
-            idContinent: 1
-        }
+    endRound(points) {
+        const { dispatch } = this.props;
+        dispatch(endRound(points));
+    } 
 
-let bodyStr = "idContinent=1&" + "r=" + r + "&g=" + g + "&b=" + b;
-        console.log(JSON.stringify(data))
+    checkCountry(r, g, b) { 
+        const country = this.props.country;
+        const countries = this.props.countries;
 
-        fetch('https://aqueous-shore-73080.herokuapp.com/countries/rgb', {
-            method: 'POST',
-            body: bodyStr,
-            headers: { 
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        for(var i = 0; i < countries.length; i++) {
+            if(r === countries[i].r && g === countries[i].g && b === countries[i].b) {
+                this.addYellowImage("./img/map/yellow/" + countries[i].id + "_y.png");
+                break;
             }
-        })
-            .then(function (response) {
-                console.log("Response", response);
-                return response.json();
-            })
-            .then(function (result) {
-                console.log("Response", result[0].id);
-            })
-            .catch(function (error) {
-                console.log('Request failed', error);
-            });
+        }
+ 
+        if(r === country.r && g === country.g && b === country.b) {
+            this.endRound(50);
+        } else {
+            this.endRound(0);
+        }
     }
 
     render() {
         const isYellow = this.state.isYellow;
+        const isEndStage = this.props.isEndStage;
         let yellowCountry = null;
+        let correctCountry = null;
 
         if (isYellow) {
-            yellowCountry = <CountryImage src={this.state.yellowPath} />
+            yellowCountry = <CountryImage className='imgPointerYellow' src={this.state.yellowPath} />
+        }
+
+        if (isEndStage) {
+            correctCountry = <CountryImage className='imgCorrect' src={"./img/map/green/" + this.props.country.id + "_g.png"} />
         }
 
         return (<div id='country_img' className='image-container'>
-            <CountryImage onMapClick={this.handleMapClick.bind(this)} id="map" src='./img/europe.png' />
+            <CountryImage className='imgPointer' onMapClick={this.handleMapClick.bind(this)} id="map" src='./img/europe.png' />
             {yellowCountry}
+            {correctCountry}
         </div>
         );
     }
+}; 
+
+CountryStage.propTypes = {
+    countries: PropTypes.array.isRequired,
+    isEndStage: PropTypes.bool.isRequired,
+    
 };
+
+function mapStateToProps(state) { 
+    return {
+        isEndStage: state.isEndStage,
+        countries: state.items
+    }
+}
+
+export default connect(mapStateToProps)(CountryStage)

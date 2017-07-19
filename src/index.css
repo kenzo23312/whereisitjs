@@ -1,5 +1,5 @@
 html,body {
-    background: #222222;
+    background: #000;
     color: white;
     width:100%;
     height:100%;
@@ -33,7 +33,7 @@ img {
     position: absolute;
     border-style: solid;
     border-width: 0px 5px 0px 5px;
-    border-color: #222222;
+    border-color: #000;
     background: #2c2c2c;
     width: 100%; 
     height: 100%;
@@ -44,7 +44,7 @@ img {
     background: #3b3b3b; 
     border-style: solid;
     border-width: 5px 0px 0px 0px;
-    border-color: #222222;
+    border-color: #000;
     width: 100%;
     height: 15%;
     bottom:0;
@@ -54,7 +54,7 @@ img {
     position: absolute; 
     background: white;
     width: 100%;
-    height: 78%;
+    height: 79%;
 }
 
 .center { 
@@ -62,14 +62,10 @@ img {
     right: 0;
     top: 0;
 }
-
-.questionButtons {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    align-items: center;
-}
+ 
 .button {
-    margin: 20vmin;
+    width: 40vmin;
+    margin-top: 5vmin;
 }
 
 .timerContent {
@@ -97,7 +93,7 @@ img {
 
 .navigationLine {
      height: 0.7%;
-     background: #222222; 
+     background: #000; 
 }   
 
 .navigationTitle { 
@@ -122,22 +118,188 @@ img {
     cursor: pointer;
     top:0;
     right: 0;
-    
     position: absolute;
     z-index: 1;
 }
 
-.imgPointerYellow {
+.imgPointerCity {
     cursor: pointer;
+    position: absolute;
+    z-index: 1;
+}
+
+.pin {
+    z-index: 1;
+    position:absolute;
+    
+}
+
+.imgPointerYellow {
     top:0;
     right: 0;
     position: absolute;
     z-index: 3;
 }
 
+.imgCorrect {
+    top:0;
+    right: 0;
+    position: absolute;
+    z-index: 4;
+}
+
 .image-container {
     width: 100%;
     height:100%;
-    background: pink;
-    position: relative; 
+    display: flex;
+    justify-content: center;
+}
+
+.questions {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    background: #222222; 
+} 
+
+.question-label {
+    font-size: 4vmin;
+    margin-left: 7vmin;
+    margin-right: 7vmin;
+    margin-bottom: 5vmin;
+    text-align: center;
+}
+
+.question-button {
+    background: #fff;
+    border-radius: 5px;
+    width:40vmin;
+    cursor: pointer;
+    height:7vmin;
+    font-size: 3vmin;
+    margin-left: 7vmin;
+    margin-right: 7vmin;
+    margin-bottom: 5vmin;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.question-button-correct {
+    background: #78af02;
+    border-radius: 5px;
+    width:40vmin;
+    cursor: pointer;
+    height:7vmin;
+    font-size: 3vmin;
+    margin-left: 7vmin;
+    margin-right: 7vmin;
+    margin-bottom: 5vmin;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+
+.question-button-player {
+    background: #ecce16;
+    border-radius: 5px;
+    width:40vmin;
+    cursor: pointer;
+    height:7vmin;
+    font-size: 3vmin;
+    margin-left: 7vmin;
+    margin-right: 7vmin;
+    margin-bottom: 5vmin;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.question-button-bot {
+    background: #169dd8;
+    border-radius: 5px;
+    width:40vmin;
+    cursor: pointer;
+    height:7vmin;
+    font-size: 3vmin;
+    margin-left: 7vmin;
+    margin-right: 7vmin;
+    margin-bottom: 5vmin;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.question-button-both {
+    background: repeating-linear-gradient(
+    45deg,
+    #ecce16,
+    #ecce16 10px,
+    #169dd8 10px,
+    #169dd8 20px);
+    border-radius: 5px;
+    width:40vmin;
+    cursor: pointer;
+    height:7vmin;
+    font-size: 3vmin;
+    margin-left: 7vmin;
+    margin-right: 7vmin;
+    margin-bottom: 5vmin;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.question-content {
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;     
+    -ms-user-select: none;      
+    flex-grow: 1;
+    user-select: none;  
+    color:#222222;
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  flex-grow: 1;
+  border-top: 1.5vmin solid transparent;
+  border-bottom: 1.5vmin solid transparent;
+  border-left: 1.5vmin solid #222222;
+} 
+
+.arrow-right-transparent {
+  width: 0; 
+  height: 0; 
+  flex-grow: 1;
+  border-top: 1.5vmin solid transparent;
+  border-bottom: 1.5vmin solid transparent;
+  border-left: 1.5vmin solid transparent;
+}  
+
+.arrow-left {
+  width: 0; 
+  height: 0; 
+  flex-grow: 1;
+  border-top: 1.5vmin solid transparent;
+  border-bottom: 1.5vmin solid transparent; 
+  border-right: 1.5vmin solid #222222; 
+} 
+
+.arrow-left-transparent {
+  width: 0; 
+  height: 0; 
+  flex-grow: 1;
+  border-top: 1.5vmin solid transparent;
+  border-bottom: 1.5vmin solid transparent; 
+  border-right: 1.5vmin solid transparent; 
 } 

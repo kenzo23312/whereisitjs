@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import nextStage from './redux/actions';
+import { nextStage, endStage } from './redux/actions';
+import PropTypes from 'prop-types';
 import CircularProgressbar from 'react-circular-progressbar';
+
+const BREAK = 2;
+const ROUND_TIME = 5;
 
 class Timer extends React.Component {
     constructor(props) {
         super(props)
 
-        var progress = 10;
-        this.state = { progressMax: progress, count: progress, stage: 0, progress: 0 }
+        this.state = { count: ROUND_TIME, progress: 0 }
+        this.nextStageTick = this.nextStageTick.bind(this);
+        this.startNextStage = this.startNextStage.bind(this);
     }
 
     componentDidMount() {
@@ -20,20 +25,44 @@ class Timer extends React.Component {
     }
 
     tick() {
-        if (this.state.count > 0 && this.state.count <= this.state.progressMax) {
+        if (this.state.count > 0 && this.state.count <= ROUND_TIME && !this.props.isEndRound) {
             this.setState({ count: (this.state.count - 1) });
-            this.setState({ progress: (100 / this.state.progressMax) * (this.state.progressMax - this.state.count) });
-        } else if (this.state.count === 0) {
-            if (this.state.stage === 2) {
-                this.setState({ stage: 0 });
-            } else {
-                this.setState({ progress: (0) });
-                this.setState({ stage: (this.state.stage + 1) });
-            }
-
-            this.setState({ count: this.state.progressMax });
-            this.props.nextStage(this.state.stage);
+            this.setState({ progress: (100 / ROUND_TIME) * (ROUND_TIME - this.state.count) });
+        } else if (this.props.isEndRound || this.state.count === 0) {
+            this.clearStageTimer();
+            this.startNextStage();
         }
+    }
+
+    clearStageTimer() {
+        this.stopTimer();
+        this.setState({ progress: 0 });
+        this.setState({ count: BREAK });
+    }
+
+    nextStageTick() {
+        if (this.state.count > 0 && this.state.count <= BREAK) {
+            this.setState({ count: (this.state.count - 1) });
+            this.setState({ progress: (100 / 3) * (3 - this.state.count) });
+        } else if (this.state.count === 0) {
+            this.setState({ count: ROUND_TIME });
+            this.setState({ progress: 0 });
+            this.stopTimer();
+            this.startTimer();
+
+            const { dispatch } = this.props
+            dispatch(nextStage(this.props.stage + 1));
+            dispatch(endStage(false))
+        }
+    }
+
+    startNextStage() {
+        setTimeout(() => {
+            const { dispatch } = this.props
+            dispatch(endStage(true))
+        }, 1000);
+
+        this.timer = setInterval(this.nextStageTick.bind(this), 1000)
     }
 
     startTimer() {
@@ -59,10 +88,17 @@ class Timer extends React.Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        nextStage: stage => dispatch(nextStage(stage))
-    }
+
+Timer.propTypes = {
+    isEndRound: PropTypes.bool.isRequired,
+    stage: PropTypes.number.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Timer);
+function mapStateToProps(state) {
+    return {
+        isEndRound: state.isEndRound,
+        stage: state.stage,
+    }
+}
+
+export default connect(mapStateToProps)(Timer);

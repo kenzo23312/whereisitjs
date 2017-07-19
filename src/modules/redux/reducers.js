@@ -1,10 +1,48 @@
-import { NEXT_STAGE, RECEIVE_COUNTRIES, REQUEST_COUNTRIES } from './actions';
-import { combineReducers } from 'redux';
+import { NEXT_STAGE, END_ROUND, END_STAGE, RECEIVE_COUNTRIES, REQUEST_COUNTRIES, QUESTION_ANSWER } from './actions';
 
-function stage(state = 0, action = {}) {
+function questionAnswer(state = { answer: -1, correct: -1, player: -1 }, action) {
+    switch (action.type) {
+        case QUESTION_ANSWER:
+            return Object.assign({}, state, {
+                questionAnswer: action.answer,
+                questionCorrect: action.correct,
+                questionPlayer: action.player
+            });
+        default:
+            return state;
+    }
+}
+
+function endStage(state = { isEndStage: false }, action) {
+    switch (action.type) {
+        case END_STAGE:
+            return Object.assign({}, state, {
+                isEndStage: action.isEnd
+            });
+        default:
+            return state;
+    }
+}
+
+function endRound(state = { points: 0 }, action) {
+    switch (action.type) {
+        case END_ROUND:
+            return Object.assign({}, state, {
+                points: state.points + action.points,
+                isEndRound: true
+            });
+        default:
+            return state;
+    }
+}
+
+function stage(state = { stage: 0 }, action) {
     switch (action.type) {
         case NEXT_STAGE:
-            return action.stage;
+            return Object.assign({}, state, {
+                stage: action.stage,
+                isEndRound: false
+            });
         default:
             return state;
     }
@@ -16,31 +54,46 @@ function countries(state = {
 }, action) {
     switch (action.type) {
         case REQUEST_COUNTRIES:
-            return Object.assign({}, state, {
-                isFetching: true,
-            })
+            return state;
         case RECEIVE_COUNTRIES:
             return Object.assign({}, state, {
                 isFetching: false,
-                items: state.countries,
+                items: action.countries,
             })
         default:
             return state;
     }
 }
 
-function countriesByContinentId(state = {}, action) {
+export function whereisit(state = {}, action) {
+    console.log(action.type)
     switch (action.type) {
+        case QUESTION_ANSWER:
+            return questionAnswer(state, action);
+        case END_ROUND:
+            return endRound(state, action);
+        case END_STAGE:
+            return endStage(state, action);
+        case NEXT_STAGE:
+            return stage(state, action);
         case RECEIVE_COUNTRIES:
         case REQUEST_COUNTRIES:
-            return Object.assign({}, state, {
-               action: countries(state, action)
-            })
+            return countries(state, action);
         default:
-            return state
+            return state = {
+                isEndRound: false,
+                points: 0,
+                stage: 0,
+                questionAnswer: -1,
+                questionPlayer: -1,
+                questionCorrect: -1,
+                isFetching: true,
+                isEndStage: false,
+                items: []
+            }
     }
 }
 
-const whereisitApp = combineReducers({ stage, countriesByContinentId });
+// const whereisitApp = combineReducers({ fetchedCountries });
 
-export default whereisitApp
+// export default whereisitApp
