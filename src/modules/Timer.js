@@ -4,8 +4,8 @@ import { nextStage, endStage } from './redux/actions';
 import PropTypes from 'prop-types';
 import CircularProgressbar from 'react-circular-progressbar';
 
-const BREAK = 2;
-const ROUND_TIME = 5;
+const BREAK = 3;
+const ROUND_TIME = 10;
 
 class Timer extends React.Component {
     constructor(props) {
@@ -56,11 +56,11 @@ class Timer extends React.Component {
         }
     }
 
-    startNextStage() {
+    startNextStage() { 
         setTimeout(() => {
             const { dispatch } = this.props
             dispatch(endStage(true))
-        }, 1000);
+        }, 2000);
 
         this.timer = setInterval(this.nextStageTick.bind(this), 1000)
     }

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 class QuestionButton extends React.Component {
 
     handleClick(event) {
-        if (this.props.answer === -1) {
+        if (!this.props.isEndStage) {
             this.props.callback(this.props.questionNumber, 0);
         }
     }
@@ -13,14 +13,16 @@ class QuestionButton extends React.Component {
     render() {
         const answer = this.props.answer;
         const player = this.props.player;
-        const correct = this.props.correct;
 
         var arrowRightClass = "arrow-right-transparent";
         var arrowLeftClass = "arrow-left-transparent";
         var buttonClass = "question-button";
 
-        console.log(correct, answer);
-        if (answer === this.props.questionNumber && correct !== this.props.questionNumber) {
+console.log(this.props);
+        console.log("ANWSER ", answer, "CORRECT ", this.props.correctAnswer, "NUMBER ", this.props.questionNumber, "END ", this.props.isEndStage)
+
+        if (answer === this.props.questionNumber && !this.props.isEndStage || this.props.isEndStage 
+        && this.props.correctAnswer !== this.props.answer && answer === this.props.questionNumber) {
             if (player === 0) {
                 buttonClass = "question-button-player";
                 arrowRightClass = "arrow-right"
@@ -32,7 +34,7 @@ class QuestionButton extends React.Component {
                 arrowRightClass = "arrow-right"
                 buttonClass = "question-button-both";
             }
-        } else if (correct === this.props.questionNumber) {
+        } else if (this.props.correctAnswer === this.props.questionNumber && this.props.isEndStage) {
             buttonClass = "question-button-correct";
 
             if (answer === this.props.questionNumber) {
@@ -60,12 +62,12 @@ QuestionButton.propTypes = {
     callback: PropTypes.func,
     player: PropTypes.number.isRequired,
     answer: PropTypes.number.isRequired,
-    correct: PropTypes.number.isRequired
+    isEndStage: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
     return {
-        correct: state.questionCorrect,
+        isEndStage: state.isEndStage,
         answer: state.questionAnswer,
         player: state.questionPlayer
     }

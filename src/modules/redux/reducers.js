@@ -1,11 +1,10 @@
 import { NEXT_STAGE, END_ROUND, END_STAGE, RECEIVE_COUNTRIES, REQUEST_COUNTRIES, QUESTION_ANSWER } from './actions';
 
-function questionAnswer(state = { answer: -1, correct: -1, player: -1 }, action) {
+function questionAnswer(state = { answer: -1, player: -1 }, action) {
     switch (action.type) {
         case QUESTION_ANSWER:
             return Object.assign({}, state, {
                 questionAnswer: action.answer,
-                questionCorrect: action.correct,
                 questionPlayer: action.player
             });
         default:
@@ -86,7 +85,6 @@ export function whereisit(state = {}, action) {
                 stage: 0,
                 questionAnswer: -1,
                 questionPlayer: -1,
-                questionCorrect: -1,
                 isFetching: true,
                 isEndStage: false,
                 items: []

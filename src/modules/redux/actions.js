@@ -28,11 +28,10 @@ export function endRound(points) {
     }
 }  
 
-export function questionAnswer(answer, correct, player) {
+export function questionAnswer(answer, player) {
     return {
         type: QUESTION_ANSWER,
         answer,
-        correct,
         player,
     }
 } 

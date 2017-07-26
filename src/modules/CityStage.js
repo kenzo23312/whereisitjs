@@ -2,6 +2,7 @@ import React from 'react';
 import CountryImage from './CountryImage.js';
 import { endRound } from './redux/actions';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class CityStage extends React.Component {
     constructor(props) {
@@ -19,24 +20,26 @@ class CityStage extends React.Component {
     }
 
     handleMapClick(event) {
-        var img = document.getElementById('map');
-        var canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
+        if (!this.props.isEndStage) {
+            var img = document.getElementById('map');
+            var canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
 
-        var context = canvas.getContext('2d')
-        context.drawImage(img, 0, 0, img.width, img.height);
-        var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        var index = (event.nativeEvent.offsetY * imageData.width + event.nativeEvent.offsetX) * 4;
-        var red = imageData.data[index];
-        var green = imageData.data[index + 1];
-        var blue = imageData.data[index + 2];
+            var context = canvas.getContext('2d')
+            context.drawImage(img, 0, 0, img.width, img.height);
+            var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            var index = (event.nativeEvent.offsetY * imageData.width + event.nativeEvent.offsetX) * 4;
+            var red = imageData.data[index];
+            var green = imageData.data[index + 1];
+            var blue = imageData.data[index + 2];
 
-        if (red !== 0 && green !== 0 && blue !== 0 && !this.state.isYellow) {
-            this.setState({ isYellow: true });
-            this.setState({ top: event.nativeEvent.offsetY - img.width / 2 });
-            this.setState({ left: event.nativeEvent.offsetX - img.height / 2 - this.state.imgW / 2 });
-            this.endRound(0);
+            if (red !== 0 && green !== 0 && blue !== 0 && !this.state.isYellow) {
+                this.setState({ isYellow: true });
+                this.setState({ top: event.nativeEvent.offsetY - img.width / 2 });
+                this.setState({ left: event.nativeEvent.offsetX - img.height / 2 - this.state.imgW / 2 });
+                this.endRound(0);
+            }
         }
     }
 
@@ -64,4 +67,14 @@ class CityStage extends React.Component {
     }
 };
 
-export default connect()(CityStage)
+CityStage.propTypes = {
+    isEndStage: PropTypes.bool.isRequired,
+};
+
+function mapStateToProps(state) {
+    return {
+        isEndStage: state.isEndStage,
+    }
+}
+
+export default connect(mapStateToProps)(CityStage)

@@ -13,26 +13,17 @@ class QuestionStage extends React.Component {
 
     componentWillUnmount() {
         const { dispatch } = this.props
-        dispatch(questionAnswer(-1, -1, -1))
+        dispatch(questionAnswer(-1, -1))
     }
 
     endRound(points) {
         const { dispatch } = this.props
-        dispatch(endRound(points))
-
-        this.showCorrectAnswer()
-    }
-
-    showCorrectAnswer() {
-        setTimeout(() => {
-            const { dispatch } = this.props
-            dispatch(questionAnswer(this.props.answer, this.props.question.correct, this.props.player))
-        }, 2000);
-    }
+        dispatch(endRound(points)) 
+    } 
 
     answerQuestion(questionNumber) {
         const { dispatch } = this.props
-        dispatch(questionAnswer(questionNumber, -1, 0))
+        dispatch(questionAnswer(questionNumber, 0))
 
         var points = questionNumber === this.props.question.correct ? 50 : 0;
         this.endRound(points);
@@ -42,21 +33,21 @@ class QuestionStage extends React.Component {
         return (
             <div className='questions'>
                 <div className="question-label">{this.props.question.question}</div>
-                <QuestionButton callback={this.answerQuestion} questionNumber={1} content={this.props.question.a} />
-                <QuestionButton callback={this.answerQuestion} questionNumber={2} content={this.props.question.b} />
-                <QuestionButton callback={this.answerQuestion} questionNumber={3} content={this.props.question.c} />
-                <QuestionButton callback={this.answerQuestion} questionNumber={4} content={this.props.question.d} />
+                <QuestionButton callback={this.answerQuestion} correctAnswer={this.props.question.correct} questionNumber={1} content={this.props.question.a} />
+                <QuestionButton callback={this.answerQuestion} correctAnswer={this.props.question.correct} questionNumber={2} content={this.props.question.b} />
+                <QuestionButton callback={this.answerQuestion} correctAnswer={this.props.question.correct} questionNumber={3} content={this.props.question.c} />
+                <QuestionButton callback={this.answerQuestion} correctAnswer={this.props.question.correct} questionNumber={4} content={this.props.question.d} />
             </div>);
     }
 };
 
 QuestionStage.propTypes = {
     player: PropTypes.number.isRequired,
-    answer: PropTypes.number.isRequired
+    answer: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state) {
-    return {
+    return { 
         answer: state.questionAnswer,
         player: state.questionPlayer
     }
